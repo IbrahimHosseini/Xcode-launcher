@@ -106,7 +106,7 @@ Xcodes downloads from Apple's servers with your Apple Account, expands the archi
 ### 2. This script
 
 ```sh
-git clone <this-repo-url> xcode-launcher
+git clone https://github.com/IbrahimHosseini/Xcode-launcher.git xcode-launcher
 cd xcode-launcher
 ```
 

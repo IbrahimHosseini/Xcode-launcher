@@ -161,30 +161,51 @@ DEFAULT_XCODE="/Applications/Xcode-26.6.app"
 
 ---
 
-## What works and what does not
+## What works
+
+Verified on macOS 27 with Xcode 26.6 launched this way, alongside Xcode 27
+installed as the active version:
 
 | | Status |
 |---|---|
-| Editor, indexing, code completion | works |
-| Build, compile, link | works |
-| Archive | works |
-| Debugging on a physical device | works |
-| Command line (`xcodebuild`) | works, no launcher needed |
-| **iOS Simulator** | **likely broken** |
-| **SwiftUI Previews** | **likely broken** |
+| Editor, indexing, code completion | verified working |
+| Build, compile, link | verified working |
+| iOS Simulator | verified working |
+| Running a real project on a simulator | verified working |
+| Command line (`xcodebuild`, `simctl`) | verified working, no launcher needed |
+| Archive and export | not tested |
+| Debugging on a physical device | not tested |
+| SwiftUI Previews | not tested |
 
-The simulator limitation is real and is **not** something this script can fix.
-Parts of the simulator stack are installed outside the Xcode bundle and shared
-across all installed versions:
+If you test any of the untested rows, an issue or PR updating this table is
+welcome.
+
+### A note on the simulator
+
+Part of the simulator stack lives outside the Xcode bundle and is shared across
+every installed version:
 
 ```
 /Library/Developer/PrivateFrameworks/CoreSimulator.framework
 /Library/Developer/CoreSimulator/
 ```
 
-If your newest Xcode has already written its version there, the older Xcode
-will not be able to drive the simulator. That is a genuine technical
-incompatibility, unlike the launch block.
+Whichever Xcode ran its first launch most recently owns those paths. In
+practice this is fine, because `CoreSimulator` is backward compatible: the
+version installed by Xcode 27 drives Xcode 26.6 without complaint.
+
+What actually matters is **runtime availability**, not the framework. Simulator
+runtimes are installed separately and each Xcode expects certain ones. Check
+what you have:
+
+```bash
+DEVELOPER_DIR="/Applications/Xcode-26.6.app/Contents/Developer" xcrun simctl list runtimes
+```
+
+If the runtime your project targets is still present, the simulator works. If a
+runtime shows up under `Unavailable`, it is no longer usable and needs to be
+reinstalled from Xcode's settings. Prefer selecting a runtime that shipped with
+the older Xcode rather than one added later by the newer Xcode.
 
 ---
 

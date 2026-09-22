@@ -267,4 +267,6 @@ supported. The reverse never is.
 
 ## License
 
-MIT
+Released under the [MIT License](https://github.com/IbrahimHosseini/Xcode-launcher?tab=MIT-1-ov-file#).
+
+Copyright (c) 2026 Ibrahim Hosseini.
